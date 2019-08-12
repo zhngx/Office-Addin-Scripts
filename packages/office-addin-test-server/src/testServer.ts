@@ -27,10 +27,6 @@ export class TestServer {
 
     public async startTestServer(mochaTest: boolean = false): Promise<boolean> {
         try {
-            if (mochaTest) {
-                process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
-            }
-
             // create express server instance
             const options = await devCerts.getHttpsServerOptions();
             this.m_app.use(cors());

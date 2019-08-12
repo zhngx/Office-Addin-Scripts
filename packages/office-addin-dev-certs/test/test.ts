@@ -269,6 +269,7 @@ describe("office-addin-dev-certs", function() {
             sandbox.stub(install, "ensureCertificatesAreInstalled").callsFake(ensureCertificatesAreInstalled);
             sandbox.stub(fs, "readFileSync").returns("test");
             const serverOptions = await getHttpsServerOptions();
+            assert.strictEqual(serverOptions.caCert, "test");
             assert.strictEqual(serverOptions.cert, "test");
             assert.strictEqual(serverOptions.key, "test");
         });
@@ -282,7 +283,7 @@ describe("office-addin-dev-certs", function() {
                 assert.strictEqual(0, 1);
             } catch (err) {
 
-                assert.strictEqual(err.toString().includes("Unable to read the certificate file."), true);
+                assert.strictEqual(err.toString().includes("Unable to read the CA certificate file."), true);
             }
         });
     });

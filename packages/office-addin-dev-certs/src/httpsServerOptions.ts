@@ -6,6 +6,7 @@ import * as defaults from "./defaults";
 import { ensureCertificatesAreInstalled } from "./install";
 
 interface IHttpsServerOptions {
+    caCert: Buffer;
     cert: Buffer;
     key: Buffer;
 }
@@ -14,6 +15,13 @@ export async function getHttpsServerOptions(): Promise<IHttpsServerOptions> {
     await ensureCertificatesAreInstalled();
 
     const httpsServerOptions = {} as IHttpsServerOptions;
+
+    try {
+        httpsServerOptions.caCert = fs.readFileSync(defaults.caCertificatePath);
+    } catch (err) {
+        throw new Error(`Unable to read the CA certificate file.\n${err}`);
+    }
+
     try {
         httpsServerOptions.cert = fs.readFileSync(defaults.localhostCertificatePath);
     } catch (err) {
